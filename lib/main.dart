@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'data.dart';
+import 'graph.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -13,16 +14,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'KidsWay',
-//      navigatorKey: navigatorKey,
+      title: 'Calculator',
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         '/data': (BuildContext context) => DataPage(),
+        '/graph': (BuildContext context) => GraphPage(),
       },
       home: DataPage(),
     );
   }
 }
 
+class Point {
+  int x;
+  int y;
+}
 
 

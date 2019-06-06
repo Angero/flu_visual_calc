@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'calculator.dart';
+import 'main.dart';
+
+List<Point> points;
 
 class DataPage extends StatefulWidget {
   @override
@@ -12,8 +15,7 @@ class _DataPageState extends State<DataPage> {
   final TextEditingController controllerLast = new TextEditingController();
   final TextEditingController controllerStep = new TextEditingController();
 
-  final GlobalKey<ScaffoldState> _scaffold_state =
-      new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -25,8 +27,9 @@ class _DataPageState extends State<DataPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      key: _scaffold_state,
+      key: scaffoldState,
       appBar: AppBar(
         title: Text('Data'),
         actions: <Widget>[
@@ -89,7 +92,7 @@ class _DataPageState extends State<DataPage> {
   void _onShowSnackBar(String value) {
     print(value);
     if (value.isEmpty) return;
-    _scaffold_state.currentState.showSnackBar(new SnackBar(
+    scaffoldState.currentState.showSnackBar(new SnackBar(
       content: Text(value),
     ));
   }
@@ -102,12 +105,14 @@ class _DataPageState extends State<DataPage> {
     int l = int.parse(controllerLast.text);
     int s = int.parse(controllerStep.text);
 
-    Map<String, dynamic> map = Calculator.run(exp, f, l, s);
-    if (map == null) {
+    points = Calculator.run(exp, f, l, s);
+    if (points == null) {
       _onShowSnackBar(
           'Не удалось рассчитать математическое выражение. Проверьте формулу.');
       return;
     }
+
+    Navigator.of(context).pushNamed('/graph');
   }
 
   bool checkData() {

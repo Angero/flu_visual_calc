@@ -1,14 +1,6 @@
+import 'main.dart';
+
 class Calculator {
-  String exp;
-  int x1;
-  int x2;
-  int dx;
-  Map<int, int> result;
-
-  Calculator() {
-    result = Map();
-  }
-
   static bool checkChar(String exp) {
     var reg = RegExp(r'[0-9\(\)\+\-\/\*x]+');
     int size = 0;
@@ -67,9 +59,9 @@ class Calculator {
     return list;
   }
 
-  static Map<String, dynamic> run(String exp, int x1, int x2, int dx) {
+  static List<Point> run(String exp, int x1, int x2, int dx) {
     try {
-      Map<String, dynamic> map = Map();
+      List<Point> points = List();
       for (int i = x1; i <= x2; i += dx) {
         String expX = exp.replaceAll('x', i.toString());
         List<dynamic> list = parse(expX);
@@ -77,10 +69,13 @@ class Calculator {
           List<dynamic> b = brackets(list);
           if (!runIn(list, b: b)) return null;
         }
-        map.addAll({'x': i, 'y': list[0]});
+        Point p = Point();
+        p.x = i;
+        p.y = list[0];
+        points.add(p);
         print(list[0]);
       }
-      return map;
+      return points;
     } catch (e) {
       return null;
     }
