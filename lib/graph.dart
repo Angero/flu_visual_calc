@@ -22,9 +22,6 @@ class _GraphPageState extends State<GraphPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Graphic'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.info_outline), onPressed: null),
-        ],
       ),
       body: CustomPaint(
         painter: CurvePainter(),

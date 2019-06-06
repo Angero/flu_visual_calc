@@ -40,7 +40,7 @@ class Calculator {
             sign = -1;
           } else {
             String p = exp.substring(i - 1, i);
-            if (!isInt(p)) {
+            if (!isInt(p) && p != ')') {
               sign = -1;
             } else {
               list.add(c);
@@ -59,10 +59,10 @@ class Calculator {
     return list;
   }
 
-  static List<Point> run(String exp, int x1, int x2, int dx) {
+  static List<Point> run(String exp, int x1, int x2) {
     try {
       List<Point> points = List();
-      for (int i = x1; i <= x2; i += dx) {
+      for (int i = x1; i <= x2; i++) {
         String expX = exp.replaceAll('x', i.toString());
         List<dynamic> list = parse(expX);
         while (list.length != 1) {

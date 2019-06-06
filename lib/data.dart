@@ -13,7 +13,6 @@ class _DataPageState extends State<DataPage> {
   final TextEditingController controllerExp = new TextEditingController();
   final TextEditingController controllerFirst = new TextEditingController();
   final TextEditingController controllerLast = new TextEditingController();
-  final TextEditingController controllerStep = new TextEditingController();
 
   final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
@@ -22,7 +21,6 @@ class _DataPageState extends State<DataPage> {
     super.initState();
     controllerFirst.text = '1';
     controllerLast.text = '10';
-    controllerStep.text = '1';
   }
 
   @override
@@ -32,15 +30,13 @@ class _DataPageState extends State<DataPage> {
       key: scaffoldState,
       appBar: AppBar(
         title: Text('Data'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.info_outline), onPressed: null),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: <Widget>[
             TextField(
+              autofocus: true,
               keyboardType: TextInputType.text,
               controller: controllerExp,
               decoration: InputDecoration(
@@ -62,14 +58,6 @@ class _DataPageState extends State<DataPage> {
               decoration: InputDecoration(
                 labelText: 'Last Value',
                 hintText: 'Input last value',
-              ),
-            ),
-            TextField(
-              keyboardType: TextInputType.number,
-              controller: controllerStep,
-              decoration: InputDecoration(
-                labelText: 'Step',
-                hintText: 'Input step value',
               ),
             ),
             SizedBox(
@@ -103,9 +91,8 @@ class _DataPageState extends State<DataPage> {
     exp = exp.replaceAll(')(', ')*(');
     int f = int.parse(controllerFirst.text);
     int l = int.parse(controllerLast.text);
-    int s = int.parse(controllerStep.text);
 
-    points = Calculator.run(exp, f, l, s);
+    points = Calculator.run(exp, f, l);
     if (points == null) {
       _onShowSnackBar(
           'Не удалось рассчитать математическое выражение. Проверьте формулу.');
@@ -138,22 +125,17 @@ class _DataPageState extends State<DataPage> {
     if (controllerExp.text == '') return false;
     if (controllerFirst.text == '') return false;
     if (controllerLast.text == '') return false;
-    if (controllerStep.text == '') return false;
     if (controllerFirst.text == '') return false;
     if (controllerLast.text == '') return false;
-    if (controllerStep.text == '') return false;
     return true;
   }
 
   bool checkRange() {
     if (!Calculator.isInt(controllerFirst.text)) return false;
     if (!Calculator.isInt(controllerLast.text)) return false;
-    if (!Calculator.isInt(controllerStep.text)) return false;
     int f = int.parse(controllerFirst.text);
     int l = int.parse(controllerLast.text);
-    int s = int.parse(controllerStep.text);
     if (f > l) return false;
-    if (s <= 0) return false;
     return true;
   }
 }
