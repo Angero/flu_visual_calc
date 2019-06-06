@@ -14,6 +14,7 @@ class _GraphPageState extends State<GraphPage> {
   void initState() {
     super.initState();
     graph = Graph();
+    graph.init(dt.points);
   }
 
   @override
@@ -27,8 +28,36 @@ class _GraphPageState extends State<GraphPage> {
       ),
       body: CustomPaint(
         painter: CurvePainter(),
-        child: Center(
-          child: Text("Blade Runner"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: Container(),
+              flex: 1,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text(graph.minY.toString() + ' - ' + graph.maxY.toString()),
+              ],
+            ),
+            Container(
+              height: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.black12,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(graph.minX.toString()),
+                Text(graph.maxX.toString()),
+              ],
+            ),
+            Expanded(
+              child: Container(),
+              flex: 1,
+            ),
+          ],
         ),
       ),
     );
@@ -69,6 +98,7 @@ class Graph {
   int maxY;
   int dX;
   int dY;
+  int sh;
   double dw;
   double dh;
 
@@ -76,7 +106,7 @@ class Graph {
     dots = List();
   }
 
-  convert(List<Point> points, Size size) {
+  init(List<Point> points) {
     for (Point point in points) {
       minX ??= point.x;
       maxX ??= point.x;
@@ -87,18 +117,21 @@ class Graph {
       if (point.y < minY) minY = point.y;
       if (point.y > maxY) maxY = point.y;
     }
+  }
 
+  convert(List<Point> points, Size size) {
     dX = maxX - minX;
     dY = maxY - minY;
     dw = size.width / dX;
-    dh = size.height / dY;
+    dh = size.width / dY; //size.height / dY;
+    sh = ((size.height - size.width) / 2).floor();
 
     dots = List();
     int i = 0;
     for (Point point in points) {
       Point dot = Point();
       dot.x = (i * dw).floor();
-      dot.y = ((maxY - point.y) * dh).floor();
+      dot.y = ((maxY - point.y) * dh).floor() + sh;
       dots.add(dot);
       print(dot.x.toString() + ' ' + dot.y.toString());
       i++;
